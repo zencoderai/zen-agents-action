@@ -1,0 +1,50 @@
+name: "Zen Agents Action"
+description: "A GitHub Action to run Zencoder Autonomous Agents"
+inputs:
+  prompt:
+    description: "The input prompt for the Agent"
+    required: true
+  agent:
+    description: "Alias of the agent to run (will run default agent if not provided)"
+    required: false
+    default: ""
+  base_path:
+    description: "Base path to run agent from (should be repository root)"
+    required: false
+    default: "."
+  zencoder_client_id:
+    description: "Client ID for Zencoder API"
+    required: true
+  zencoder_client_secret:
+    description: "Client Secret for Zencoder API"
+    required: true
+  github_token:
+    description: "GitHub token used by the action to access GitHub APIs"
+    required: true
+  version:
+    description: "Version of the zencoder cli to use"
+    required: false
+    default: latest
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install zencoder
+      shell: bash
+      run: |
+        ZEN_CLI_NAME="zencoder"
+        echo "Downloading $ZEN_CLI_NAME..."
+        curl -o $ZEN_CLI_NAME https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/"${{ inputs.version }}"/$ZEN_CLI_NAME
+        chmod +x $ZEN_CLI_NAME
+
+    - name: Run Zen Agent
+      shell: bash
+      env:
+        PROMPT: "${{ inputs.prompt }}"
+        AGENT: "${{ inputs.agent }}"
+        BASE_PATH: "${{ inputs.base_path }}"
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+        CLIENT_ID: ${{ inputs.zencoder_client_id }}
+        CLIENT_SECRET: ${{ inputs.zencoder_client_secret }}
+      run: |
+        ./zencoder --base-path "$BASE_PATH" --agent "$AGENT" --prompt "$PROMPT" --autonomous

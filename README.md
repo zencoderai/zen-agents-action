@@ -7,7 +7,7 @@
 
 ## Authentication
 
-To get Zencoder client id and secret go to the https://auth.zencoder.ai/dashboard#/admin-box/personal-tokens
+To get Zencoder client id and secret go to the https://auth.zencoder.ai/profile and click on **Settings** -> **Personal Tokens**.
 
 ## Workflow examples
 

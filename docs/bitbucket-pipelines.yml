@@ -1,0 +1,58 @@
+image: atlassian/default-image:5
+
+definitions:
+  steps:
+    - step: &run-zen-agent-base
+        name: Run Zencoder Agent
+        script:
+          - cd ..
+          - echo "Downloading zencoder..."
+          - VERSION=${VERSION:-latest}
+          - curl -o zencoder https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION/zencoder
+          - chmod +x zencoder
+          - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
+          - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
+          - export BITBUCKET_TOKEN="${ZENCODER_BITBUCKET_TOKEN}"
+          - echo "Running Zen Agent..."
+          - ./zencoder --base-path "${BITBUCKET_CLONE_DIR}" --agent "${agent}" --prompt "${prompt}"
+    
+    - step: &run-zen-agent-pr
+        name: Run Zencoder Agent - PR Review
+        script:
+          - |
+            echo "Checking PR author using git..."
+            PR_AUTHOR=$(git log -1 --pretty=format:'%an' HEAD)
+            echo "PR Author: $PR_AUTHOR"
+            if [[ "$PR_AUTHOR" =~ (bitbucket-pipelines) ]]; then
+              echo "Skipping execution - PR created by bot: $PR_AUTHOR"
+              exit 0
+            fi
+          - cd ..
+          - echo "Downloading zencoder..."
+          - VERSION=${VERSION:-latest}
+          - curl -o zencoder https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION/zencoder
+          - chmod +x zencoder
+          - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
+          - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
+          - export BITBUCKET_TOKEN="${ZENCODER_BITBUCKET_TOKEN}"
+          - |
+            prompt="Please review the pull request with number $BITBUCKET_PR_ID and add comment to it. Please address only the serious issues, not the minor ones. If you didn't find any serious issues, please write 'Looks good to me!'."
+            agent=""
+          - echo "Running Zen Agent for PR review..."
+          - ./zencoder --base-path "${BITBUCKET_CLONE_DIR}" --agent "${agent}" --prompt "${prompt}"
+
+pipelines:
+  custom:
+    zencoder-agent:
+      - variables:
+          - name: prompt
+            description: "The input prompt for the Agent"
+            default: ""
+          - name: agent
+            description: "Alias of the agent to run (will run default agent if not provided)"
+            default: ""
+      - step: *run-zen-agent-base
+    
+  pull-requests:
+    '**':
+      - step: *run-zen-agent-pr

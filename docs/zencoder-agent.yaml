@@ -1,0 +1,30 @@
+name: Run Zencoder Agent
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        type: string
+        description: "The input prompt for the Agent"
+        required: true
+      agent:
+        type: string
+        description: "Alias of the agent to run (will run default agent if not provided)"
+        required: false
+        default: ""
+
+jobs:
+  agent-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Running Zencoder Agent
+        uses: zencoderai/zen-agents-action@main
+        with:
+          prompt: "${{ inputs.prompt }}"
+          agent: "${{ inputs.agent }}"
+          zencoder_client_id: "${{ secrets.ZENCODER_CLIENT_ID }}"
+          zencoder_client_secret: "${{ secrets.ZENCODER_CLIENT_SECRET }}"
+          github_token: "${{ secrets.CICD_TOKEN }}"

@@ -1,0 +1,27 @@
+name: Zencoder PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  review:
+    if: |
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'pull_request_review' &&
+       github.event.review.user.login == 'zencoderai')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run PR Review
+        uses: zencoderai/zen-agents-action@main
+        with:
+          prompt: "Review pull request #${{ github.event.pull_request.number }} and add comments. Focus on serious issues only."
+          zencoder_client_id: "${{ secrets.ZENCODER_CLIENT_ID }}"
+          zencoder_client_secret: "${{ secrets.ZENCODER_CLIENT_SECRET }}"
+          github_token: "${{ secrets.CICD_TOKEN }}"

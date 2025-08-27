@@ -1,0 +1,82 @@
+image: ubuntu:22.04
+
+variables:
+  GIT_DEPTH: 0
+
+stages:
+  - zencoder
+
+.run_zencoder_base: &run_zencoder_base
+  stage: zencoder
+  before_script:
+    - apt-get update && apt-get install -y curl git
+    - cd ..
+    - echo "Downloading zencoder..."
+    - VERSION=${VERSION:-latest}
+    - curl -o zencoder https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION/zencoder
+    - chmod +x zencoder
+    - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
+    - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
+    - export GITLAB_TOKEN="${ZENCODER_GITLAB_TOKEN}"
+    - pushd ${CI_PROJECT_DIR}
+    - git config user.name "zencoder"
+    - git config user.email "zencoder@zencoder.ai"
+    # Add this if GitLab requires authentication
+    # - git remote set-url origin "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - popd
+
+  script:
+    - echo "Running Zencoder Agent with variables..."
+    - ./zencoder --base-path "${CI_PROJECT_DIR}" --agent "${agent}" --prompt "${prompt}"
+
+# Manual agent execution
+zencoder-agent:
+  <<: *run_zencoder_base
+
+  variables:
+    prompt: ""
+    agent: ""
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: manual
+    - if: $CI_PIPELINE_SOURCE == "api"
+      when: on_success
+  script:
+    - |
+      if [ -z "$prompt" ]; then
+        echo "Error: prompt variable is required for manual execution"
+        echo "Please set the prompt variable when running this job manually"
+        exit 1
+      fi
+    - echo "Running Zencoder Agent with custom prompt..."
+    - ./zencoder --base-path "${CI_PROJECT_DIR}" --agent "${agent}" --prompt "${prompt}"
+
+# Automatic MR review
+zencoder-mr-review:
+  <<: *run_zencoder_base
+  variables:
+    prompt: "Please review the merge request with number $CI_MERGE_REQUEST_IID and add comment to it. Please address only the serious issues, not the minor ones. If you didn't find any serious issues, please write 'Looks good to me!'."
+    agent: ""
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  before_script:
+    - apt-get update && apt-get install -y curl git
+    - |
+      echo "Checking MR author to avoid bot loops..."
+      MR_AUTHOR=$(git log -1 --pretty=format:'%an' HEAD)
+      echo "MR Author: $MR_AUTHOR"
+      if [[ "$MR_AUTHOR" =~ (gitlab-ci|bot|GitLab) ]]; then
+        echo "Skipping execution - MR created by bot: $MR_AUTHOR"
+        exit 0
+      fi
+    - cd ..
+    - echo "Downloading zencoder..."
+    - VERSION=${VERSION:-latest}
+    - curl -o zencoder https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION/zencoder
+    - chmod +x zencoder
+    - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
+    - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
+    - export GITLAB_TOKEN="${ZENCODER_GITLAB_TOKEN}"
+  script:
+    - echo "Running Zencoder Agent for MR review..."
+    - ./zencoder --base-path "${CI_PROJECT_DIR}" --agent "${agent}" --prompt "${prompt}"

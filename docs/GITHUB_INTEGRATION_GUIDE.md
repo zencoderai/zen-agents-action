@@ -221,6 +221,7 @@ Review all open pull requests labeled 'needs-review' and provide feedback
    - Check workflow file syntax with GitHub's validator
    - Verify branch protection rules aren't blocking
    - Ensure workflow file is on default branch
+   - Some events are not emitted when authorized by default `GITHUB_TOKEN` (see [this discussion](https://github.com/orgs/community/discussions/49257)), make sure you use your own PAT token instead of `GITHUB_TOKEN`.
 
 ### Debugging Steps
 

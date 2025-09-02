@@ -33,7 +33,7 @@ jobs:
           prompt: "Please review the pull request with number ${{ github.event.pull_request.number }} and add comment to it. Please address only the serious issues, not the minor ones. If you didn't find any serious issues, please write 'Looks good to me!'."
           zencoder_client_id: "${{ secrets.ZENCODER_CLIENT_ID }}"
           zencoder_client_secret: "${{ secrets.ZENCODER_CLIENT_SECRET }}"
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          github_token: "${{ secrets.GITHUB_PAT }}"
 ```
 
 ### Workflow to be triggered from API call or manually
@@ -67,7 +67,7 @@ jobs:
           agent: "${{ inputs.agent }}"
           zencoder_client_id: "${{ secrets.ZENCODER_CLIENT_ID }}"
           zencoder_client_secret: "${{ secrets.ZENCODER_CLIENT_SECRET }}"
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          github_token: "${{ secrets.GITHUB_PAT }}"
 ```
 
 ## Inputs

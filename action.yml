@@ -25,6 +25,10 @@ inputs:
     description: "Version of the zencoder cli to use"
     required: false
     default: latest
+  model:
+    description: "LLM model to use (e.g., opus-4-5, sonnet-4, gemini-25-pro). Use 'default' for server default."
+    required: false
+    default: "default"
 
 runs:
   using: "composite"
@@ -43,8 +47,13 @@ runs:
         PROMPT: "${{ inputs.prompt }}"
         AGENT: "${{ inputs.agent }}"
         BASE_PATH: "${{ inputs.base_path }}"
+        MODEL: "${{ inputs.model }}"
         GITHUB_TOKEN: ${{ inputs.github_token }}
         CLIENT_ID: ${{ inputs.zencoder_client_id }}
         CLIENT_SECRET: ${{ inputs.zencoder_client_secret }}
       run: |
-        ./zencoder --base-path "$BASE_PATH" --agent "$AGENT" --prompt "$PROMPT" --autonomous
+        MODEL_ARG=""
+        if [ -n "$MODEL" ] && [ "$MODEL" != "default" ]; then
+          MODEL_ARG="--model $MODEL"
+        fi
+        ./zencoder --base-path "$BASE_PATH" --agent "$AGENT" $MODEL_ARG --prompt "$PROMPT" --autonomous

@@ -81,6 +81,7 @@ jobs:
 | `version`                | String | false    | `"latest"` | Version of the zencoder to use                                     |
 | `agent`                  | String | false    | `""`       | Alias of the agent to run (will run default agent if not provided) |
 | `base_path`              | String | false    | `"."`      | Base path to run agent from (should be repository root)            |
+| `model`                  | String | false    | `"default"`| LLM model to use (e.g., `opus-4-5`, `sonnet-4`, `gemini-25-pro`). Use `default` for server default. |
 
 [release]: https://github.com/zencoderai/zen-agents-action/releases/latest
 [release-img]: https://img.shields.io/github/release/zencoderai/zen-agents-action.svg?logo=github

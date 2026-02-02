@@ -8,8 +8,31 @@ definitions:
           - cd ..
           - echo "Downloading zencoder..."
           - VERSION=${VERSION:-latest}
-          - curl -o zencoder https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION/zencoder
+          - BASE_URL="https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION"
+          - |
+            curl -fsSL -o zencoder "$BASE_URL/zencoder" || {
+              echo "Error: Failed to download zencoder binary" >&2
+              exit 1
+            }
+          - |
+            if [ ! -s zencoder ]; then
+              echo "Error: Downloaded file is empty or missing" >&2
+              exit 1
+            fi
+          - echo "Downloading checksum..."
+          - |
+            curl -fsSL -o zencoder.sha256 "$BASE_URL/zencoder.sha256" || {
+              echo "Error: Failed to download checksum file" >&2
+              exit 1
+            }
+          - echo "Verifying integrity..."
+          - |
+            echo "$(cat zencoder.sha256)  zencoder" | sha256sum -c - || {
+              echo "Error: Checksum verification failed" >&2
+              exit 1
+            }
           - chmod +x zencoder
+          - echo "Successfully installed and verified zencoder"
           - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
           - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
           - export BITBUCKET_TOKEN="${ZENCODER_BITBUCKET_TOKEN}"
@@ -30,8 +53,31 @@ definitions:
           - cd ..
           - echo "Downloading zencoder..."
           - VERSION=${VERSION:-latest}
-          - curl -o zencoder https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION/zencoder
+          - BASE_URL="https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION"
+          - |
+            curl -fsSL -o zencoder "$BASE_URL/zencoder" || {
+              echo "Error: Failed to download zencoder binary" >&2
+              exit 1
+            }
+          - |
+            if [ ! -s zencoder ]; then
+              echo "Error: Downloaded file is empty or missing" >&2
+              exit 1
+            fi
+          - echo "Downloading checksum..."
+          - |
+            curl -fsSL -o zencoder.sha256 "$BASE_URL/zencoder.sha256" || {
+              echo "Error: Failed to download checksum file" >&2
+              exit 1
+            }
+          - echo "Verifying integrity..."
+          - |
+            echo "$(cat zencoder.sha256)  zencoder" | sha256sum -c - || {
+              echo "Error: Checksum verification failed" >&2
+              exit 1
+            }
           - chmod +x zencoder
+          - echo "Successfully installed and verified zencoder"
           - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
           - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
           - export BITBUCKET_TOKEN="${ZENCODER_BITBUCKET_TOKEN}"

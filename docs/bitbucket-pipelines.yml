@@ -8,7 +8,7 @@ definitions:
           - cd ..
           - echo "Downloading zencoder..."
           - VERSION=${VERSION:-latest}
-          - BASE_URL="https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION"
+          - BASE_URL="https://download.zencoder.ai/zencoder/zencoder/linux-amd64/$VERSION"
           - |
             curl -fsSL -o zencoder "$BASE_URL/zencoder" || {
               echo "Error: Failed to download zencoder binary" >&2
@@ -53,7 +53,7 @@ definitions:
           - cd ..
           - echo "Downloading zencoder..."
           - VERSION=${VERSION:-latest}
-          - BASE_URL="https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/$VERSION"
+          - BASE_URL="https://download.zencoder.ai/zencoder/zencoder/linux-amd64/$VERSION"
           - |
             curl -fsSL -o zencoder "$BASE_URL/zencoder" || {
               echo "Error: Failed to download zencoder binary" >&2

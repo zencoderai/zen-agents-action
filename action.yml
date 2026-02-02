@@ -37,7 +37,7 @@ runs:
       shell: bash
       run: |
         ZEN_CLI_NAME="zencoder"
-        BASE_URL="https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/${{ inputs.version }}"
+        BASE_URL="https://download.zencoder.ai/zencoder/zencoder/linux-amd64/${{ inputs.version }}"
         
         echo "Downloading $ZEN_CLI_NAME..."
         curl -fsSL -o $ZEN_CLI_NAME "$BASE_URL/$ZEN_CLI_NAME" || {

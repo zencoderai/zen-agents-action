@@ -27,7 +27,8 @@ definitions:
             }
           - echo "Verifying integrity..."
           - |
-            echo "$(cat zencoder.sha256)  zencoder" | sha256sum -c - || {
+            EXPECTED_HASH=$(awk '{print $1}' zencoder.sha256)
+            echo "$EXPECTED_HASH  zencoder" | sha256sum -c - || {
               echo "Error: Checksum verification failed" >&2
               exit 1
             }
@@ -72,7 +73,8 @@ definitions:
             }
           - echo "Verifying integrity..."
           - |
-            echo "$(cat zencoder.sha256)  zencoder" | sha256sum -c - || {
+            EXPECTED_HASH=$(awk '{print $1}' zencoder.sha256)
+            echo "$EXPECTED_HASH  zencoder" | sha256sum -c - || {
               echo "Error: Checksum verification failed" >&2
               exit 1
             }

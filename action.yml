@@ -37,9 +37,34 @@ runs:
       shell: bash
       run: |
         ZEN_CLI_NAME="zencoder"
+        BASE_URL="https://download.zencoder.ai/zencoder/zencoder/linux-amd64/${{ inputs.version }}"
+        
         echo "Downloading $ZEN_CLI_NAME..."
-        curl -o $ZEN_CLI_NAME https://storage.googleapis.com/zencoder-public/zencoder/linux-amd64/"${{ inputs.version }}"/$ZEN_CLI_NAME
+        curl -fsSL -o $ZEN_CLI_NAME "$BASE_URL/$ZEN_CLI_NAME" || {
+          echo "Error: Failed to download zencoder binary" >&2
+          exit 1
+        }
+        
+        if [ ! -s $ZEN_CLI_NAME ]; then
+          echo "Error: Downloaded file is empty or missing" >&2
+          exit 1
+        fi
+        
+        echo "Downloading checksum..."
+        curl -fsSL -o ${ZEN_CLI_NAME}.sha256 "$BASE_URL/${ZEN_CLI_NAME}.sha256" || {
+          echo "Error: Failed to download checksum file" >&2
+          exit 1
+        }
+        
+        echo "Verifying integrity..."
+        EXPECTED_HASH=$(awk '{print $1}' ${ZEN_CLI_NAME}.sha256)
+        echo "$EXPECTED_HASH  $ZEN_CLI_NAME" | sha256sum -c - || {
+          echo "Error: Checksum verification failed" >&2
+          exit 1
+        }
+        
         chmod +x $ZEN_CLI_NAME
+        echo "Successfully installed and verified $ZEN_CLI_NAME"
 
     - name: Run Zen Agent
       shell: bash

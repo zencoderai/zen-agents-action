@@ -7,7 +7,9 @@
 
 ## Authentication
 
-To get Zencoder client id and secret go to the https://auth.zencoder.ai/profile and click on **Settings** -> **Personal Tokens**.
+Generate an API key at https://auth.zencoder.ai/api-keys and pass it as `zencoder_api_key`.
+
+> **Note:** `zencoder_client_id` and `zencoder_client_secret` are deprecated and kept for backwards compatibility only. Use `zencoder_api_key` for new integrations.
 
 ## Workflow examples
 
@@ -31,6 +33,7 @@ jobs:
         uses: zencoderai/zen-agents-action@main
         with:
           prompt: "Please review the pull request with number ${{ github.event.pull_request.number }} and add comment to it. Please address only the serious issues, not the minor ones. If you didn't find any serious issues, please write 'Looks good to me!'."
+          zencoder_api_key: "${{ secrets.ZENCODER_API_KEY }}"
           zencoder_client_id: "${{ secrets.ZENCODER_CLIENT_ID }}"
           zencoder_client_secret: "${{ secrets.ZENCODER_CLIENT_SECRET }}"
           github_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -65,6 +68,7 @@ jobs:
         with:
           prompt: "${{ inputs.prompt }}"
           agent: "${{ inputs.agent }}"
+          zencoder_api_key: "${{ secrets.ZENCODER_API_KEY }}"
           zencoder_client_id: "${{ secrets.ZENCODER_CLIENT_ID }}"
           zencoder_client_secret: "${{ secrets.ZENCODER_CLIENT_SECRET }}"
           github_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -74,8 +78,9 @@ jobs:
 
 | Name                     | Type   | Required | Default    | Description                                                        |
 | ------------------------ | ------ | -------- | ---------- | ------------------------------------------------------------------ |
-| `zencoder_client_id`     | String | true     |            | Zencoder client id for authentication                              |
-| `zencoder_client_secret` | String | true     |            | Zencoder client secret for authentication                          |
+| `zencoder_api_key`       | String | false    |            | Zencoder API key for authentication                                |
+| `zencoder_client_id`     | String | false    |            | Zencoder client id (deprecated, use `zencoder_api_key`)            |
+| `zencoder_client_secret` | String | false    |            | Zencoder client secret (deprecated, use `zencoder_api_key`)        |
 | `github_token`           | String | true     |            | GitHub token used by the action to access GitHub APIs              |
 | `prompt`                 | String | true     |            | The input prompt for the Agent                                     |
 | `version`                | String | false    | `"latest"` | Version of the zencoder to use                                     |

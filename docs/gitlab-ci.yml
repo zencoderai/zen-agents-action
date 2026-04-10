@@ -39,6 +39,7 @@ stages:
       }
     - chmod +x zencoder
     - echo "Successfully installed and verified zencoder"
+    - export ZENCODER_API_KEY="${ZENCODER_API_KEY}"
     - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
     - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
     - export GITLAB_TOKEN="${ZENCODER_GITLAB_TOKEN}"
@@ -122,6 +123,7 @@ zencoder-mr-review:
       }
     - chmod +x zencoder
     - echo "Successfully installed and verified zencoder"
+    - export ZENCODER_API_KEY="${ZENCODER_API_KEY}"
     - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
     - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
     - export GITLAB_TOKEN="${ZENCODER_GITLAB_TOKEN}"

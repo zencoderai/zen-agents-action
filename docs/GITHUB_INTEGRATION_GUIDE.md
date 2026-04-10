@@ -16,7 +16,7 @@ This guide provides step-by-step instructions for integrating the Autonomous Age
 Before starting the integration, ensure you have:
 
 - A GitHub account with repository access
-- Zencoder client credentials (CLIENT_ID and CLIENT_SECRET)
+- Zencoder API key (or legacy client credentials)
 - Repository with write permissions
 - Basic understanding of GitHub Actions and YAML configuration
 
@@ -65,11 +65,12 @@ For managing multiple repositories:
 2. Click **New organization secret**
 3. Add the following secrets:
    
-   | Secret Name              | Value              | Description                     |
-   |--------------------------|--------------------|---------------------------------|
-   | `ZENCODER_CLIENT_ID`     | Your client ID     | Zencoder API client ID          |
-   | `ZENCODER_CLIENT_SECRET` | Your client secret | Zencoder API client secret      |
-   | `CICD_TOKEN`             | Your GitHub PAT    | Token with elevated permissions |
+   | Secret Name              | Value              | Description                                      |
+   |--------------------------|--------------------|-------------------------------------------------|
+   | `ZENCODER_API_KEY`       | Your API key       | Zencoder API key (generate at auth.zencoder.ai/api-keys) |
+   | `ZENCODER_CLIENT_ID`     | Your client ID     | Zencoder client ID (deprecated)                 |
+   | `ZENCODER_CLIENT_SECRET` | Your client secret | Zencoder client secret (deprecated)             |
+   | `CICD_TOKEN`             | Your GitHub PAT    | Token with elevated permissions                 |
 
 4. Select which repositories can access these secrets
 

@@ -14,10 +14,16 @@ inputs:
     default: "."
   zencoder_client_id:
     description: "Client ID for Zencoder API"
-    required: true
+    required: false
+    default: ""
   zencoder_client_secret:
     description: "Client Secret for Zencoder API"
-    required: true
+    required: false
+    default: ""
+  zencoder_api_key:
+    description: "API key for Zencoder API"
+    required: false
+    default: ""
   github_token:
     description: "GitHub token used by the action to access GitHub APIs"
     required: true
@@ -76,6 +82,7 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         CLIENT_ID: ${{ inputs.zencoder_client_id }}
         CLIENT_SECRET: ${{ inputs.zencoder_client_secret }}
+        ZENCODER_API_KEY: ${{ inputs.zencoder_api_key }}
       run: |
         MODEL_ARG=""
         if [ -n "$MODEL" ] && [ "$MODEL" != "default" ]; then

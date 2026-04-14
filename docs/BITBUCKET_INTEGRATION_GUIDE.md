@@ -16,7 +16,7 @@ This guide provides step-by-step instructions for integrating the Autonomous Age
 Before starting the integration, ensure you have:
 
 - A Bitbucket account with repository access
-- Zencoder client credentials (CLIENT_ID and CLIENT_SECRET)
+- Zencoder API key (or legacy client credentials)
 - Repository with write permissions
 - Basic understanding of environment variables and YAML configuration
 
@@ -75,8 +75,9 @@ For organizations managing multiple repositories:
    
    | Variable Name | Value | Secured |
    |--------------|-------|---------|
-   | `ZENCODER_CLIENT_ID` | Your client ID | No |
-   | `ZENCODER_CLIENT_SECRET` | Your client secret | Yes |
+   | `ZENCODER_API_KEY` | Your API key | Yes |
+   | `ZENCODER_CLIENT_ID` | Your client ID (deprecated) | No |
+   | `ZENCODER_CLIENT_SECRET` | Your client secret (deprecated) | Yes |
    | `ZENCODER_BITBUCKET_TOKEN` | Your Bitbucket token | Yes |
 
 #### Repository-Level Configuration (Alternative)

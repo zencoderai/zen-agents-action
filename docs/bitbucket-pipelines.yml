@@ -34,6 +34,7 @@ definitions:
             }
           - chmod +x zencoder
           - echo "Successfully installed and verified zencoder"
+          - export ZENCODER_API_KEY="${ZENCODER_API_KEY}"
           - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
           - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
           - export BITBUCKET_TOKEN="${ZENCODER_BITBUCKET_TOKEN}"
@@ -80,6 +81,7 @@ definitions:
             }
           - chmod +x zencoder
           - echo "Successfully installed and verified zencoder"
+          - export ZENCODER_API_KEY="${ZENCODER_API_KEY}"
           - export CLIENT_ID="${ZENCODER_CLIENT_ID}"
           - export CLIENT_SECRET="${ZENCODER_CLIENT_SECRET}"
           - export BITBUCKET_TOKEN="${ZENCODER_BITBUCKET_TOKEN}"

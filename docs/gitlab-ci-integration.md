@@ -12,8 +12,9 @@ The GitLab CI/CD integration allows you to run AI-powered agents on your reposit
 
 In your GitLab project, navigate to **Settings > CI/CD > Variables** and add the following variables:
 
-- `ZENCODER_CLIENT_ID`: Your Zencoder API client ID
-- `ZENCODER_CLIENT_SECRET`: Your Zencoder API client secret (mark as protected and masked)
+- `ZENCODER_API_KEY`: Your Zencoder API key — generate at https://auth.zencoder.ai/api-keys (mark as protected and masked)
+- `ZENCODER_CLIENT_ID`: Your Zencoder API client ID (deprecated)
+- `ZENCODER_CLIENT_SECRET`: Your Zencoder API client secret (deprecated, mark as protected and masked)
 - `ZENCODER_GITLAB_TOKEN`: GitLab access token with API permissions (mark as protected and masked)
 
 Make sure to set the **Minimum role to use pipeline variables** setting to the role of the person configuring the pipeline.
@@ -63,8 +64,9 @@ The following environment variables can be configured:
 
 | Variable                 | Description | Required |
 |--------------------------|-------------|----------|
-| `ZENCODER_CLIENT_ID`     | Your Zencoder API client ID | Yes |
-| `ZENCODER_CLIENT_SECRET` | Your Zencoder API client secret | Yes |
+| `ZENCODER_API_KEY`       | Your Zencoder API key | Yes |
+| `ZENCODER_CLIENT_ID`     | Your Zencoder API client ID (deprecated) | No |
+| `ZENCODER_CLIENT_SECRET` | Your Zencoder API client secret (deprecated) | No |
 | `ZENCODER_GITLAB_TOKEN`  | GitLab access token with API permissions | Yes |
 | `agent`                  | Specific agent to use (optional) | No |
 | `VERSION`                | Zencoder binary version to download | No (defaults to "latest") |

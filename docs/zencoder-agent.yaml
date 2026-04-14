@@ -25,6 +25,7 @@ jobs:
         with:
           prompt: "${{ inputs.prompt }}"
           agent: "${{ inputs.agent }}"
+          zencoder_api_key: "${{ secrets.ZENCODER_API_KEY }}"
           zencoder_client_id: "${{ secrets.ZENCODER_CLIENT_ID }}"
           zencoder_client_secret: "${{ secrets.ZENCODER_CLIENT_SECRET }}"
           github_token: "${{ secrets.CICD_TOKEN }}"

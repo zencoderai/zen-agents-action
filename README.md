@@ -36,7 +36,7 @@ jobs:
           zencoder_api_key: "${{ secrets.ZENCODER_API_KEY }}"
           zencoder_client_id: "${{ secrets.ZENCODER_CLIENT_ID }}"
           zencoder_client_secret: "${{ secrets.ZENCODER_CLIENT_SECRET }}"
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          github_token: "${{ secrets.GITHUB_PAT }}"
 ```
 
 ### Workflow to be triggered from API call or manually
@@ -71,7 +71,7 @@ jobs:
           zencoder_api_key: "${{ secrets.ZENCODER_API_KEY }}"
           zencoder_client_id: "${{ secrets.ZENCODER_CLIENT_ID }}"
           zencoder_client_secret: "${{ secrets.ZENCODER_CLIENT_SECRET }}"
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          github_token: "${{ secrets.GITHUB_PAT }}"
 ```
 
 ## Inputs
